@@ -63,5 +63,5 @@ EXPOSE 1186 3306
 ####################################################
 ADD run.sh /run.sh
 RUN chmod +x /run.sh
-#ENTRYPOINT ["/run.sh"]
+ENTRYPOINT ["/run.sh"]
 #CMD ["ndb_mgm"]
