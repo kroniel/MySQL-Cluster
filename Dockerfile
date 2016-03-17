@@ -1,6 +1,6 @@
-FROM debian:wheezy
+FROM debian:jessie
 
-MAINTAINER Henrik Sachse <t3x7m3@posteo.de>
+MAINTAINER Alexandr Yolgin <kronkalex@gmail.com>
 
 
 ####################################################
@@ -15,8 +15,8 @@ RUN groupadd mysql && useradd -g mysql mysql
 ####################################################
 # Installation
 ####################################################
-ENV MYSQL_CLUSTER_VERSION 7.4
-ENV MYSQL_CLUSTER_MICRO_VERSION 4
+ENV MYSQL_CLUSTER_VERSION 7.5
+ENV MYSQL_CLUSTER_MICRO_VERSION 0
 ENV MYSQL_CLUSTER_ARCH x86_64
 
 ENV MYSQL_CLUSTER_ARCHIVE_NAME mysql-cluster-gpl-${MYSQL_CLUSTER_VERSION}.${MYSQL_CLUSTER_MICRO_VERSION}-linux-glibc2.5-${MYSQL_CLUSTER_ARCH}
@@ -29,7 +29,7 @@ RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selectio
 ENV MYSQL_CLUSTER_HOME /usr/local/mysql
 ENV MYSQL_CLUSTER_DATA ${MYSQL_CLUSTER_HOME}/data
 ENV MYSQL_CLUSTER_LOG /var/lib/mysql-cluster
-ENV MYSQL_CLUSTER_CONFIG /etc/mysql-cluster.ini
+ENV MYSQL_CLUSTER_CONFIG ${MYSQL_CLUSTER_LOG}/config.ini
 
 RUN cd /var/tmp \
     && curl --silent -OL http://dev.mysql.com/get/Downloads/MySQL-Cluster-${MYSQL_CLUSTER_VERSION}/${MYSQL_CLUSTER_ARCHIVE} \
@@ -42,7 +42,8 @@ RUN cd /var/tmp \
     && chgrp -R ${MYSQL_GROUP} ${MYSQL_CLUSTER_HOME}
 
 RUN cd ${MYSQL_CLUSTER_HOME} \
-    && ./scripts/mysql_install_db --user=${MYSQL_USER}
+    && bin/mysqld --initialize --user=${MYSQL_USER} \
+    && bin/mysql_ssl_rsa_setup
 
 VOLUME ${MYSQL_CLUSTER_LOG}
 VOLUME ${MYSQL_CLUSTER_DATA}
@@ -62,5 +63,5 @@ EXPOSE 1186 3306
 ####################################################
 ADD run.sh /run.sh
 RUN chmod +x /run.sh
-ENTRYPOINT ["/run.sh"]
-CMD ["ndb_mgm"]
+#ENTRYPOINT ["/run.sh"]
+#CMD ["ndb_mgm"]

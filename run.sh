@@ -31,7 +31,7 @@ if [ $1 == "ndbd" ]; then
     exec ${MYSQL_CLUSTER_BIN}/ndbd --nodaemon ${INITIAL} --connect-string="host=${MYSQL_MANAGEMENT_SERVER}:${MYSQL_MANAGEMENT_PORT}"
 elif [ $1 == "ndb_mgmd" ]; then
     echo "Starting ndb_mgmd..."
-    exec ${MYSQL_CLUSTER_BIN}/ndb_mgmd --nodaemon ${RELOAD} ${INITIAL} -f ${MYSQL_CLUSTER_CONFIG}
+    exec ${MYSQL_CLUSTER_BIN}/ndb_mgmd --nodaemon ${RELOAD} ${INITIAL} -f ${MYSQL_CLUSTER_CONFIG} --configdir=${MYSQL_CLUSTER_LOG}
 elif [ $1 == "mysqld" ]; then
     echo "Starting mysqld_safe..."
     exec ${MYSQL_CLUSTER_BIN}/mysqld_safe --ndbcluster --ledir=${MYSQL_CLUSTER_BIN} --ndb-connectstring=${MYSQL_MANAGEMENT_SERVER}
