@@ -18,6 +18,10 @@ RELOAD="--reload"
 if [ ! -e ${MYSQL_CLUSTER_DATA}/.initial ]; then
     echo "First execution detected. Using --initial parameter."
     INITIAL="--initial"
+    exec ${MYSQL_CLUSTER_BIN}/mysqld_safe --skip-grant-tables &
+    exec ${MYSQL_CLUSTER_BIN}/mysql -u root -e "USE mysql; update user set authentication_string=PASSWORD("uMfNjc2B5ds") where User='root'; flush privileges;"
+    exec pkill mysql
+    exec sleep 5s
     RELOAD=""
     touch ${MYSQL_CLUSTER_DATA}/.initial
 else
@@ -35,6 +39,9 @@ elif [ $1 == "ndb_mgmd" ]; then
 elif [ $1 == "mysqld" ]; then
     echo "Starting mysqld_safe..."
     exec ${MYSQL_CLUSTER_BIN}/mysqld_safe --ndbcluster --ledir=${MYSQL_CLUSTER_BIN} --ndb-connectstring=${MYSQL_MANAGEMENT_SERVER}
+elif [ $1 == "bash"  ]; then
+    echo "Starting bash..."
+    exec /bin/bash
 else
     echo "Starting ndb_mgm..."
     exec ${MYSQL_CLUSTER_BIN}/ndb_mgm ${MYSQL_MANAGEMENT_SERVER}
