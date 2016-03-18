@@ -18,10 +18,6 @@ RELOAD="--reload"
 if [ ! -e ${MYSQL_CLUSTER_DATA}/.initial ]; then
     echo "First execution detected. Using --initial parameter."
     INITIAL="--initial"
-    exec ${MYSQL_CLUSTER_BIN}/mysqld_safe --skip-grant-tables &
-    exec ${MYSQL_CLUSTER_BIN}/mysql -u root -e "USE mysql; update user set authentication_string=PASSWORD("uMfNjc2B5ds") where User='root'; flush privileges;"
-    exec pkill mysql
-    exec sleep 5s
     RELOAD=""
     touch ${MYSQL_CLUSTER_DATA}/.initial
 else
