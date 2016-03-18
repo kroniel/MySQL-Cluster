@@ -42,7 +42,7 @@ RUN cd /var/tmp \
     && chgrp -R ${MYSQL_GROUP} ${MYSQL_CLUSTER_HOME}
 
 RUN cd ${MYSQL_CLUSTER_HOME} \
-    && bin/mysqld --initialize --user=${MYSQL_USER} \
+    && bin/mysqld --initialize-insecure --user=${MYSQL_USER} \
     && bin/mysql_ssl_rsa_setup
 
 VOLUME ${MYSQL_CLUSTER_LOG}
