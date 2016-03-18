@@ -7,9 +7,9 @@ The project sources can be found on [GitHub](https://github.com/g17/MySQL-Cluste
 
 #Build
 
-    git clone https://github.com/kroniel/MySQL-Cluster.git
-    cd MySQL-Cluster
-    docker build -t kroniel/mysql-cluster .
+    git clone https://github.com/kroniel/mcluster.git
+    cd mcluster
+    docker build -t kroniel/mcluster .
 
 
 #Prerequisites
