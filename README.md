@@ -59,23 +59,23 @@ Prepare a configuration file for the management node similar to the following on
 
 1. Start the management node on host 192.168.0.1:
 
-        docker run -d --name ndb_mgmd01 --net=host -p 192.168.0.1:1186:1186 -v /path/to/your/config.ini:/etc/mysql-cluster.ini:ro kroniel/mysql-cluster ndb_mgmd
+        docker run -d --name ndb_mgmd01 --net=host -p 192.168.0.1:1186:1186 -v /path/to/your/config.ini:/var/lib/mysql-cluster/config.ini:ro kroniel/mcluster ndb_mgmd
 
 
 2. Connect with the management console to the management node to issue the _SHOW_ command that displays your cluster configuration and state:
 
-        docker run -it --rm --name ndb_mgm kroniel/mysql-cluster ndb_mgm 192.168.0.1
+        docker run -it --rm --name ndb_mgm kroniel/mcluster ndb_mgm 192.168.0.1
 
 3. Run the data nodes on host 192.168.0.10 and 192.168.0.11:
 
-        docker run -d --name ndbd01 --net=host kroniel/mysql-cluster ndbd 192.168.0.1
-        docker run -d --name ndbd02 --net=host kroniel/mysql-cluster ndbd 192.168.0.1
+        docker run -d --name ndbd01 --net=host kroniel/mcluster ndbd 192.168.0.1
+        docker run -d --name ndbd02 --net=host kroniel/mcluster ndbd 192.168.0.1
 
 
 4. Run the SQL nodes on host 192.168.0.100 and 192.168.0.101:
 
-        docker run -d --name mysqld01 --net=host -p 192.168.0.100:3306:3306 kroniel/mysql-cluster mysqld 192.168.0.1
-        docker run -d --name mysqld02 --net=host -p 192.168.0.101:3306:3306 kroniel/mysql-cluster mysqld 192.168.0.1
+        docker run -d --name mysqld01 --net=host -p 192.168.0.100:3306:3306 kroniel/mcluster mysqld 192.168.0.1
+        docker run -d --name mysqld02 --net=host -p 192.168.0.101:3306:3306 kroniel/mcluster mysqld 192.168.0.1
 
 5. Now you can connect to any of the SQL nodes with your client.
 
